@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>zdevs | Contact</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
@@ -369,12 +369,13 @@
     .footer-nav a {
       font-weight: 400; font-size: 10px;
       letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(255,255,255,0.35); transition: color 0.2s ease;
+      color: rgba(255,255,255,0.7); transition: color 0.2s ease;
     }
     .footer-nav a:hover { color: var(--bone); }
-    .footer-copy { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.18); }
-
-    @media (max-width: 900px) {
+    .footer-copy {
+      font-size: 10px; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(255,255,255,0.7); margin: 0;
+    }@media (max-width: 900px) {
       .page-wrap { padding: 110px 24px 80px; }
       .contact-body { grid-template-columns: 1fr; gap: 48px; }
       .contact-info { position: static; }
@@ -398,7 +399,7 @@
     <a href="index.html" class="nav-logo">
       <img src="logo with bg.png" alt="zdevs" class="nav-logo-img">
     </a>
-    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
       <div class="bar"></div><div class="bar"></div><div class="bar"></div>
     </button>
     <ul class="nav-links" id="navLinks">
