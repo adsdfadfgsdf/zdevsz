@@ -535,11 +535,37 @@
       el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
     });
 
-    /* Show success state if redirected back with ?sent=1 */
-    if (new URLSearchParams(window.location.search).get('sent') === '1') {
-      document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('formSuccess').classList.add('show');
-    }
+    /* Handle form submission via AJAX to prevent redirect */
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = form.querySelector('.submit-btn span');
+      const originalText = submitBtn.innerText;
+      submitBtn.innerText = 'SENDING...';
+      
+      const formData = new FormData(form);
+      const actionUrl = form.getAttribute('action').replace('formsubmit.co/', 'formsubmit.co/ajax/');
+      
+      fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        form.reset(); // Empty the form
+        form.style.display = 'none'; // Hide the form
+        document.getElementById('formSuccess').classList.add('show'); // Show thank you message
+      })
+      .catch(error => {
+        console.error(error);
+        submitBtn.innerText = originalText;
+        alert('There was an error sending your message. Please try again.');
+      });
+    });
   </script>
 </body>
 </html>
