@@ -130,7 +130,7 @@
       transition: color .2s ease;
     }
     .nav-links a:hover { color: var(--bone); }
-    .mobile-menu-toggle { display: none; } 
+     
     .mobile-cta { display: none !important; }
 
     /* Discovery Call button */
@@ -348,17 +348,7 @@
       .nav-cta { display: inline-flex; padding: 7px 14px; margin-right: 16px; }
       .nav-cta .cta-label { font-size: 9px; }
       .nav-logo-img { height: 40px; }
-      .mobile-menu-toggle {
-        display: flex; flex-direction: column; gap: 4px;
-        background: none; border: none; cursor: pointer; padding: 4px;
-        position: relative; z-index: 200;
-      }
-      .mobile-menu-toggle .bar {
-        width: 20px; height: 2px; background: var(--bone); transition: 0.3s;
-      }
-      .mobile-menu-toggle.active .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-      .mobile-menu-toggle.active .bar:nth-child(2) { opacity: 0; }
-      .mobile-menu-toggle.active .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+      
       .nav-links {
         display: none; flex-direction: column; width: 100%; margin-top: 16px; gap: 12px;
         background: var(--void); padding: 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
@@ -850,9 +840,7 @@
     </a>
 
     <!-- Mobile Menu Toggle -->
-    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    </button>
+    
     <ul class="nav-links" id="navLinks">
       <li><a href="#" data-original="HOME" data-scroll="top">HOME</a></li>
       <li><a href="#" data-original="WHO ARE WE" data-scroll="we-are">WHO ARE WE</a></li>
@@ -1239,20 +1227,7 @@
     /* ══════════════════════════════════════
        MOBILE MENU TOGGLE
        ══════════════════════════════════════ */
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const navLinks = document.getElementById('navLinks');
-    if (mobileMenuToggle && navLinks) {
-      mobileMenuToggle.addEventListener('click', () => {
-        mobileMenuToggle.classList.toggle('active');
-        navLinks.classList.toggle('active');
-      });
-      navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenuToggle.classList.remove('active');
-          navLinks.classList.remove('active');
-        });
-      });
-    }
+    
 
 
 

@@ -83,7 +83,7 @@
       color: var(--bone); transition: border-color .3s ease;
     }
     .nav-cta:hover { border-color: var(--bone); }
-    .mobile-menu-toggle { display: none; }
+    
     .mobile-cta { display: none !important; }
 
     @media (max-width: 900px) {
@@ -438,9 +438,7 @@
     <a href="index.html" class="nav-logo">
       <img src="logo with bg.png" alt="zdevs" class="nav-logo-img">
     </a>
-    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    </button>
+    
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html">HOME</a></li>
       <li><a href="index.html#we-are">WHO ARE WE</a></li>
@@ -733,20 +731,7 @@
       });
     });
 
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const navLinks = document.getElementById('navLinks');
-    if (mobileMenuToggle && navLinks) {
-      mobileMenuToggle.addEventListener('click', () => {
-        mobileMenuToggle.classList.toggle('active');
-        navLinks.classList.toggle('active');
-      });
-      navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenuToggle.classList.remove('active');
-          navLinks.classList.remove('active');
-        });
-      });
-    }
+    
   </script>
 </body>
 </html>
