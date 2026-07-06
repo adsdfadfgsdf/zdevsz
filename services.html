@@ -109,7 +109,7 @@
         background: var(--void); padding: 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
         align-items: flex-start; text-align: left;
       }
-      .nav-links.active { display: flex !important; z-index: 300; }
+      .nav-links.active { display: flex !important; z-index: 9999 !important; opacity: 1 !important; visibility: visible !important; }
       .nav-links a { font-size: 14px; }
       .desktop-cta { display: none !important; }
       .mobile-cta { display: inline-flex !important; justify-content: center; width: 100%; margin-top: 12px; padding: 12px; }
@@ -615,7 +615,7 @@
           <path class="road-path" d="M 400 100 C 750 100, 750 600, 400 600 C 50 600, 50 1100, 400 1100" />
           <path class="animated-path" d="M 400 100 C 750 100, 750 600, 400 600 C 50 600, 50 1100, 400 1100" />
           <g class="traveling-arrow" style="opacity: 0; transform-origin: 0 0;">
-            <polygon points="-12 -7, 4 0, -12 7, -7 0" fill="#3DF59A" />
+            <polygon points="-4 -8, 10 0, -4 8" fill="#3DF59A" />
           </g>
         </svg>
       </div>
@@ -626,7 +626,7 @@
           <path class="road-path" d="M 35 100 C 220 100, 220 550, 35 550 C 220 550, 220 1000, 35 1000" />
           <path class="animated-path" d="M 35 100 C 220 100, 220 550, 35 550 C 220 550, 220 1000, 35 1000" />
           <g class="traveling-arrow" style="opacity: 0; transform-origin: 0 0;">
-            <polygon points="-12 -7, 4 0, -12 7, -7 0" fill="#3DF59A" />
+            <polygon points="-4 -8, 10 0, -4 8" fill="#3DF59A" />
           </g>
         </svg>
       </div>

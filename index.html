@@ -187,14 +187,7 @@
     /* ── Gradient overlay — keeps text readable ── */
     .hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(8,8,8,.60)  0%,
-        rgba(8,8,8,.10)  35%,
-        rgba(8,8,8,.10)  60%,
-        rgba(8,8,8,.75)  85%,
-        rgba(8,8,8,.97) 100%
-      );
+      background: radial-gradient(circle at top right, rgba(20,20,20,0.1) 0%, rgba(8,8,8,0.8) 100%);
       z-index: 1;
     }
 
@@ -369,7 +362,7 @@
         background: var(--void); padding: 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
         align-items: flex-start; text-align: left;
       }
-      .nav-links.active { display: flex !important; z-index: 300; }
+      .nav-links.active { display: flex !important; z-index: 9999 !important; opacity: 1 !important; visibility: visible !important; }
       .nav-links a { font-size: 14px; }
       .desktop-cta { display: none !important; }
       .mobile-cta { display: inline-flex !important; justify-content: center; width: 100%; margin-top: 12px; padding: 12px; }
