@@ -820,13 +820,14 @@
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       
-      let speedMult = 1.0;
+      // Balance chaos and coverage on mobile screens
+      let speedMult = 2.0;
       if (width < 768) {
-        numParticles = 50;
-        connectionDistance = 125;
-        speedMult = 0.5;
+        numParticles = 160;
+        connectionDistance = 145;
+        speedMult = 1.8; // Increased animation on mobile
       } else {
-        numParticles = 80;
+        numParticles = 140;
         connectionDistance = 160;
       }
 
