@@ -612,26 +612,22 @@
       <!-- Desktop SVG -->
       <div class="svg-container">
         <svg viewBox="0 0 800 1200" width="100%" height="100%">
-          <defs>
-            <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-              <polygon points="0 0, 6 3, 0 6" fill="#3DF59A" class="anim-arrow" />
-            </marker>
-          </defs>
           <path class="road-path" d="M 400 100 C 750 100, 750 600, 400 600 C 50 600, 50 1100, 400 1100" />
-          <path class="animated-path" d="M 400 100 C 750 100, 750 600, 400 600 C 50 600, 50 1100, 400 1100" marker-end="url(#arrowhead)" />
+          <path class="animated-path" d="M 400 100 C 750 100, 750 600, 400 600 C 50 600, 50 1100, 400 1100" />
+          <g class="traveling-arrow" style="opacity: 0; transform-origin: 0 0;">
+            <polygon points="-12 -7, 3 0, -12 7" fill="#3DF59A" />
+          </g>
         </svg>
       </div>
 
       <!-- Mobile SVG -->
       <div class="svg-container-mobile">
         <svg viewBox="0 0 300 1100" width="100%" height="100%">
-          <defs>
-            <marker id="arrowhead-mobile" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-              <polygon points="0 0, 6 3, 0 6" fill="#3DF59A" class="anim-arrow" />
-            </marker>
-          </defs>
           <path class="road-path" d="M 35 100 C 220 100, 220 550, 35 550 C 220 550, 220 1000, 35 1000" />
-          <path class="animated-path" d="M 35 100 C 220 100, 220 550, 35 550 C 220 550, 220 1000, 35 1000" marker-end="url(#arrowhead-mobile)" />
+          <path class="animated-path" d="M 35 100 C 220 100, 220 550, 35 550 C 220 550, 220 1000, 35 1000" />
+          <g class="traveling-arrow" style="opacity: 0; transform-origin: 0 0;">
+            <polygon points="-12 -7, 3 0, -12 7" fill="#3DF59A" />
+          </g>
         </svg>
       </div>
 
@@ -901,59 +897,83 @@
     const step2 = document.querySelector('.step-2');
     const step3 = document.querySelector('.step-3');
 
-    // 1. Initialize exact path lengths without animating them initially
+    const easeInOut = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+    function animatePathAndArrow(path, arrow, startFrac, endFrac, duration) {
+      const totalLength = parseFloat(path.dataset.totalLength);
+      const startLen = totalLength * startFrac;
+      const endLen = totalLength * endFrac;
+      
+      if (arrow) arrow.style.opacity = '1';
+      
+      let startTime = null;
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const eased = easeInOut(progress);
+        
+        const currentLength = startLen + (endLen - startLen) * eased;
+        path.style.strokeDashoffset = totalLength - currentLength;
+        
+        if (arrow) {
+          const pt = path.getPointAtLength(currentLength);
+          const p0 = path.getPointAtLength(Math.max(currentLength - 1, 0));
+          const p1 = path.getPointAtLength(Math.min(currentLength + 1, totalLength));
+          const angle = Math.atan2(p1.y - p0.y, p1.x - p0.x) * 180 / Math.PI;
+          arrow.setAttribute('transform', `translate(${pt.x}, ${pt.y}) rotate(${angle})`);
+        }
+        
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    // 1. Initialize exact path lengths and arrow positions without animating them initially
     animatedPaths.forEach(path => {
       const length = path.getTotalLength();
-      path.style.transition = 'none'; // disable transition
+      path.style.transition = 'none'; // we handle animation via JS now
       path.style.strokeDasharray = length;
       path.style.strokeDashoffset = length;
-      
-      // Force a layout reflow to apply the offset instantly
-      path.getBoundingClientRect();
-      
-      // Re-enable transition for when the observers trigger
-      path.style.transition = 'stroke-dashoffset 2s ease-in-out';
       path.dataset.totalLength = length;
+      
+      // Position arrow at start
+      const arrow = path.nextElementSibling;
+      if (arrow && arrow.classList.contains('traveling-arrow')) {
+        const pt = path.getPointAtLength(0);
+        const p1 = path.getPointAtLength(1);
+        const angle = Math.atan2(p1.y - pt.y, p1.x - pt.x) * 180 / Math.PI;
+        arrow.setAttribute('transform', `translate(${pt.x}, ${pt.y}) rotate(${angle})`);
+      }
     });
 
     // 2. Observer for Stage 1: Triggered when step-2 (Automate) is fully in view
     const observer1 = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        // Animate paths to half (Automate)
         animatedPaths.forEach(path => {
-          const length = parseFloat(path.dataset.totalLength);
-          path.style.strokeDashoffset = length / 2; 
+          const arrow = path.nextElementSibling;
+          animatePathAndArrow(path, arrow, 0, 0.5, 2000);
         });
         
-        // Show steps 1 & 2
         setTimeout(() => step1.classList.add('visible'), 200);
         setTimeout(() => step2.classList.add('visible'), 1200);
-        
         observer1.disconnect();
       }
-    }, { threshold: 0.9 }); // Triggers when Automate is almost fully visible at the bottom
+    }, { threshold: 0.9 });
 
     if (step2) observer1.observe(step2);
 
     // 3. Observer for Stage 2: Triggered when step-3 (GROW) enters view
     const observer2 = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        // Animate paths to the end (Grow)
         animatedPaths.forEach(path => {
-          path.style.strokeDashoffset = 0;
+          const arrow = path.nextElementSibling;
+          animatePathAndArrow(path, arrow, 0.5, 1, 2000);
         });
         
-        // Show step 3 after line travels down
         setTimeout(() => step3.classList.add('visible'), 1200);
-        
-        // Show arrowheads when the path animation finishes
-        setTimeout(() => {
-          document.querySelectorAll('.anim-arrow').forEach(el => el.classList.add('visible'));
-        }, 2000);
-        
         observer2.disconnect();
       }
-    }, { threshold: 0.8 }); // Trigger when step3 is mostly in view
+    }, { threshold: 0.8 });
 
     if (step3) observer2.observe(step3);
   </script>
