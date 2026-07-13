@@ -376,7 +376,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
       /* ── Nav ── */
       nav { padding: 12px 20px; flex-wrap: wrap; }
-      .nav-logo { flex: 1; }
+      .nav-logo { flex: none; }
       .nav-logo-img { height: 40px; }
       .mobile-menu-toggle {
         display: flex !important; flex-direction: column; gap: 4px;
@@ -1297,25 +1297,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        ══════════════════════════════════════ */
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const navLinks = document.getElementById('navLinks');
-
-    function updateHamburgerVisibility() {
-      if (!mobileMenuToggle) return;
-      if (window.innerWidth <= 900) {
-        mobileMenuToggle.style.display = 'flex';
-        mobileMenuToggle.style.flexDirection = 'column';
-        mobileMenuToggle.style.gap = '4px';
-        mobileMenuToggle.style.background = 'none';
-        mobileMenuToggle.style.border = 'none';
-        mobileMenuToggle.style.cursor = 'pointer';
-        mobileMenuToggle.style.padding = '8px';
-        mobileMenuToggle.style.zIndex = '9999';
-      } else {
-        mobileMenuToggle.style.display = 'none';
-      }
-    }
-
-    updateHamburgerVisibility();
-    window.addEventListener('resize', updateHamburgerVisibility);
 
     if (mobileMenuToggle && navLinks) {
       mobileMenuToggle.addEventListener('click', () => {
